@@ -1,0 +1,134 @@
+//#include <iostream>
+//
+//
+//int partition(int arr[], int low, int high) {
+//    int pivot = arr[high];
+//    int i = low - 1;
+//
+//    for (int j = low; j <= high - 1; j++) {
+//        if (arr[j] < pivot) {
+//            i++;
+//            int temp = arr[i];
+//            arr[i] = arr[j];
+//            arr[j] = temp;
+//        }
+//    }
+//
+//    int temp = arr[i + 1];
+//    arr[i + 1] = arr[high];
+//    arr[high] = temp;
+//
+//    return i + 1;
+//}
+//
+//void quickSort(int* arr, int low, int high) {
+//    int* stack = new int[high - low + 1];
+//    int top = -1;
+//
+//    stack[++top] = low;
+//    stack[++top] = high;
+//
+//    while (top >= 0) {
+//        high = stack[top--];
+//        low = stack[top--];
+//
+//        int pi = partition(arr, low, high);
+//
+//        if (pi - 1 > low) {
+//            stack[++top] = low;
+//            stack[++top] = pi - 1;
+//        }
+//
+//        if (pi + 1 < high) {
+//            stack[++top] = pi + 1;
+//            stack[++top] = high;
+//        }
+//    }
+//}
+//
+//int main() {
+//    int n;
+//    printf_s("Enter the number of elements: ");
+//    scanf_s("%d", &n);
+//
+//    int* arr = (int*)malloc(n * sizeof(int));
+//
+//    printf_s("Enter the elements:\n");
+//    for (int i = 0; i < n; i++) {
+//        scanf_s("%d", &arr[i]);
+//    }
+//
+//    quickSort(arr, 0, n - 1);
+//
+//    printf_s("Array after sorting:\n");
+//    for (int i = 0; i < n; i++) {
+//        printf_s("%d ", arr[i]);
+//    }
+//
+//    free(arr);
+//
+//    return 0;
+//}
+
+#include <iostream>
+
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+
+    swap(&arr[i + 1], &arr[high]);
+    return i + 1;
+}
+
+void quickSort(int* arr, int low, int high) {
+    int* stack = new int[high - low + 1];
+    int top = -1;
+
+    stack[++top] = low;
+    stack[++top] = high;
+
+    while (top >= 0) {
+        high = stack[top--];
+        low = stack[top--];
+
+        int p = partition(arr, low, high);
+
+        if (p - 1 > low) {
+            stack[++top] = low;
+            stack[++top] = p - 1;
+        }
+
+        if (p + 1 < high) {
+            stack[++top] = p + 1;
+            stack[++top] = high;
+        }
+    }
+}
+
+int main() {
+
+    int arr[] = { 12, 11, 13, 5, 6, 7 };
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    quickSort(arr, 0, n - 1);
+
+    printf("Sorted array: \n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
